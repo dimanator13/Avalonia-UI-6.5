@@ -15,6 +15,71 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <Border BorderBrush="Gray" BorderThickness="1" Margin="10">
+        <Grid RowDefinitions="Auto, Auto, *, Auto">
+            <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="1" Padding="10">
+                <StackPanel Spacing="10" Orientation="Horizontal">
+                    <TextBlock Text="Search:" VerticalAlignment="Center"/>
+                    <TextBox/>
+                </StackPanel>
+            </Border>
+            <Grid Grid.Row="1" ColumnDefinitions="Auto, *">
+                <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="1" Padding="10">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Clients"/>
+                        <ListBox ItemsSource="{Binding Clients}"
+                                 SelectedItem="{Binding SelectedClient}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1" Padding="10">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Client data"/>
+                        <TextBlock Text="Choose client" IsVisible="{Binding !HasSelectedClient}" />
+                        <Grid RowDefinitions="Auto, Auto, Auto, Auto" ColumnDefinitions="Auto, *" RowSpacing="10" ColumnSpacing="10" IsVisible="{Binding HasSelectedClient}">
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Name:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SelectedClient.Name, Mode=TwoWay}"/> 
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Phone:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SelectedClient.Phone, Mode=TwoWay}"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Email:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding SelectedClient.Email, Mode=TwoWay}"/>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Vip:" VerticalAlignment="Center"/>
+                            <CheckBox Grid.Row="3" Grid.Column="1" IsChecked="{Binding SelectedClient.IsVip, Mode=TwoWay}" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </Grid>
+            <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="1" Padding="10">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Orders:"/>
+                    <DataGrid ItemsSource="{Binding SelectedClient.Orders}" 
+                              AutoGenerateColumns="False"
+                              GridLinesVisibility="All"
+                              BorderThickness="1"
+                              BorderBrush="Gray">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Number" Binding="{Binding Number}"/>
+                            <DataGridTextColumn Header="Date" Binding="{Binding Date}"/>
+                            <DataGridTextColumn Header="Amount" Binding="{Binding Amount}"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
+                        </DataGrid.Columns>
+                        
+                    </DataGrid>
+                </StackPanel>
+            </Border>
+            <Border Grid.Row="3" BorderBrush="Gray" BorderThickness="1" Padding="10">
+                <StackPanel Spacing="10" Orientation="Horizontal">
+                    <Button Content="Add client"/>
+                    <Button Content="Delete client"/>
+                    <Button Content="Add Order"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
 
 </Window>
