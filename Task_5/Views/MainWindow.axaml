@@ -39,7 +39,7 @@
                 </Border>
                 <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1" Padding="10">
                     <StackPanel Spacing="10">
-                        <TextBlock Text="Client data"/>
+                        <TextBlock Text="Client data:"/>
                         <TextBlock Text="Choose client" IsVisible="{Binding !HasSelectedClient}" />
                         <Grid RowDefinitions="Auto, Auto, Auto, Auto" ColumnDefinitions="Auto, *" RowSpacing="10" ColumnSpacing="10" IsVisible="{Binding HasSelectedClient}">
                             <TextBlock Grid.Row="0" Grid.Column="0" Text="Name:" VerticalAlignment="Center"/>
@@ -57,11 +57,13 @@
             <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="1" Padding="10">
                 <StackPanel Spacing="10">
                     <TextBlock Text="Orders:"/>
+                    <TextBlock Text="Choose client" IsVisible="{Binding !HasSelectedClient}" />
                     <DataGrid ItemsSource="{Binding SelectedClient.Orders}" 
                               AutoGenerateColumns="False"
                               GridLinesVisibility="All"
                               BorderThickness="1"
-                              BorderBrush="Gray">
+                              BorderBrush="Gray"
+                              IsVisible="{Binding HasSelectedClient}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Number" Binding="{Binding Number}"/>
                             <DataGridTextColumn Header="Date" Binding="{Binding Date}"/>
@@ -74,9 +76,9 @@
             </Border>
             <Border Grid.Row="3" BorderBrush="Gray" BorderThickness="1" Padding="10">
                 <StackPanel Spacing="10" Orientation="Horizontal">
-                    <Button Content="Add client"/>
-                    <Button Content="Delete client"/>
-                    <Button Content="Add Order"/>
+                    <Button Content="Add client" Command="{Binding AddClientCommand}"/>
+                    <Button Content="Delete client" Command="{Binding DeleteClientCommand}"/>
+                    <Button Content="Add Order" Command="{Binding AddOrderCommand}"/>
                 </StackPanel>
             </Border>
         </Grid>

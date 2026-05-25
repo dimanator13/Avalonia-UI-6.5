@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Task_5.Models;
 namespace Task_5.ViewModels;
 
@@ -8,6 +9,8 @@ public partial class MainWindowViewModel : ViewModelBase
 {
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasSelectedClient))]
+    [NotifyCanExecuteChangedFor(nameof(DeleteClientCommand))]
+    [NotifyCanExecuteChangedFor(nameof(AddOrderCommand))]
     private ClientItem? _selectedClient;
 
     public bool HasSelectedClient => SelectedClient is not null;
@@ -27,4 +30,31 @@ public partial class MainWindowViewModel : ViewModelBase
             new OrderItem(3, new DateTime(2026, 5, 26), 200, OrderStatus.Cancelled)
         })
     };
+
+    [RelayCommand]
+    private void AddClient()
+    {
+        var client = new ClientItem("New client", null, null, true);
+        Clients.Add(client);
+        SelectedClient = client;
+    }
+    
+    [RelayCommand(CanExecute = nameof(HasSelectedClient))]
+    private void DeleteClient()
+    {
+        if (SelectedClient != null)
+        {
+            Clients.Remove(SelectedClient);
+            SelectedClient = null;
+        }
+    }
+
+    [RelayCommand(CanExecute = nameof(HasSelectedClient))]
+    private void AddOrder()
+    {
+        if (SelectedClient != null)
+        {
+            SelectedClient.Orders.Add(new OrderItem(SelectedClient.Orders.Count + 1, DateTime.Today, 0, OrderStatus.New));
+        }
+    }
 }

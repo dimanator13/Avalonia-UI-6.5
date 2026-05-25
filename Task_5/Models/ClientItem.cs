@@ -14,12 +14,12 @@ public partial class ClientItem : ObservableObject
 
     public ObservableCollection<OrderItem> Orders { get; }
 
-    public ClientItem(string name, string phone, string email, bool isVip, IEnumerable<OrderItem>? orders = null)
+    public ClientItem(string? name, string? phone, string? email, bool? isVip, IEnumerable<OrderItem>? orders = null)
     {
-        Name = name;
-        Phone = phone;
-        Email = email;
-        IsVip = isVip;
+        Name = name ?? "none";
+        Phone = phone ?? "none";
+        Email = email ?? "none";
+        IsVip = isVip ?? false;
 
         Orders = orders is null
             ? new ObservableCollection<OrderItem>()

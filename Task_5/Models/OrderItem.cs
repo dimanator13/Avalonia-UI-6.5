@@ -17,11 +17,11 @@ public partial class OrderItem : ObservableObject
     [ObservableProperty] private int _amount;
     [ObservableProperty] private OrderStatus _status;
 
-    public OrderItem(int number, DateTime date, int amount, OrderStatus status)
+    public OrderItem(int? number, DateTime? date, int? amount, OrderStatus? status)
     {
-        Number = number;
-        Date = date;
-        Amount = amount;
-        Status = status;
+        Number = number ?? 0;
+        Date = date ?? DateTime.Today;
+        Amount = amount ?? 0;
+        Status = status ?? OrderStatus.New;
     }
 }
