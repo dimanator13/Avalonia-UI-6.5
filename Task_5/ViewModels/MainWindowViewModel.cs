@@ -12,9 +12,13 @@ public partial class MainWindowViewModel : ViewModelBase
     [NotifyCanExecuteChangedFor(nameof(DeleteClientCommand))]
     [NotifyCanExecuteChangedFor(nameof(AddOrderCommand))]
     private ClientItem? _selectedClient;
+    
+    [ObservableProperty] private string _searchText = string.Empty;
 
     public bool HasSelectedClient => SelectedClient is not null;
-
+    
+    public ObservableCollection<ClientItem> FilteredClients { get; } = new();
+    
     public ObservableCollection<ClientItem> Clients { get; } = new()
     {
         new ClientItem("Ivan Petrov", "+7 111 111-11-11", "ivan@mail.com", true),
@@ -31,11 +35,19 @@ public partial class MainWindowViewModel : ViewModelBase
         })
     };
 
+    public MainWindowViewModel()
+    {
+        RefreshFilteredClients();
+    }
+
     [RelayCommand]
     private void AddClient()
     {
-        var client = new ClientItem("New client", null, null, true);
+        string name = (string.IsNullOrWhiteSpace(SearchText)) ? "New client" : SearchText;
+        var client = new ClientItem(name, null, null, true);
+        
         Clients.Add(client);
+        RefreshFilteredClients();
         SelectedClient = client;
     }
     
@@ -46,6 +58,7 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             Clients.Remove(SelectedClient);
             SelectedClient = null;
+            RefreshFilteredClients();
         }
     }
 
@@ -56,5 +69,27 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             SelectedClient.Orders.Add(new OrderItem(SelectedClient.Orders.Count + 1, DateTime.Today, 0, OrderStatus.New));
         }
+    }
+    
+    private void RefreshFilteredClients()
+    {
+        FilteredClients.Clear();
+
+        foreach (var client in Clients)
+        {
+            if (string.IsNullOrWhiteSpace(SearchText))
+            {
+                FilteredClients.Add(client);
+            }
+            else if (client.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+            {
+                FilteredClients.Add(client);
+            }
+        }
+    }
+    
+    partial void OnSearchTextChanged(string value)
+    {
+        RefreshFilteredClients();
     }
 }

@@ -20,14 +20,14 @@
             <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="1" Padding="10">
                 <StackPanel Spacing="10" Orientation="Horizontal">
                     <TextBlock Text="Search:" VerticalAlignment="Center"/>
-                    <TextBox/>
+                    <TextBox Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=300}"/>
                 </StackPanel>
             </Border>
             <Grid Grid.Row="1" ColumnDefinitions="Auto, *">
                 <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="1" Padding="10">
                     <StackPanel Spacing="10">
                         <TextBlock Text="Clients"/>
-                        <ListBox ItemsSource="{Binding Clients}"
+                        <ListBox ItemsSource="{Binding FilteredClients}"
                                  SelectedItem="{Binding SelectedClient}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
